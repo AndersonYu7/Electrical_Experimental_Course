@@ -2,39 +2,39 @@ import math
 
 def calculator():
     """A complex calculator for division, square root, and modulo operations."""
-    try:
-        # User input for the first number and the operation
-        num1 = float(input("Enter the first number: "))
-        operation = input(
-            "Enter an operation (/ for division, sqrt for square root, % for modulo): "
-        )
 
-        # If operation is division or modulo, request a second number
-        if operation in ('/', '%'):
+    operations = {
+        '/': lambda a, b: a / b if b != 0 else "Error: Division by zero.",
+        '%': lambda a, b: a % b,
+        'sqrt': lambda a, _: math.sqrt(a) if a >= 0 else "Error: Negative square root.",
+    }
+
+    try:
+        # Get user input for the first number and operation
+        num1 = float(input("Enter the first number: "))
+        operation = input("Enter an operation ('/', 'sqrt', '%'): ").strip()
+
+        # Get the second number if required
+        num2 = None
+        if operation in {'/', '%'}:
             num2 = float(input("Enter the second number: "))
 
-        # Perform the selected operation
-        if operation == '/':
-            result = num1 / num2
-        elif operation == 'sqrt':
-            if num1 < 0:
-                raise ValueError("Cannot calculate square root of a negative number!")
-            result = math.sqrt(num1)
-        elif operation == '%':
-            result = num1 % num2
-        else:
-            print("Invalid operation")
-            return
+        # Check if the operation is valid
+        if operation not in operations:
+            raise ValueError(f"Invalid operation: {operation}")
+
+        # Perform the operation
+        result = operations[operation](num1, num2)
+        print(f"Result: {result}")
 
     except ValueError as ve:
         print(f"Invalid input: {ve}")
-    except ZeroDivisionError:
-        print("Cannot divide by zero")
+    except TypeError:
+        print("Error: Missing or incorrect operands.")
     else:
-        print(f"Result: {result}")
+        print("Operation completed successfully.")
     finally:
-        print("Operation completed")
-
+        print("Calculator session ended.")
 
 if __name__ == "__main__":
     calculator()
