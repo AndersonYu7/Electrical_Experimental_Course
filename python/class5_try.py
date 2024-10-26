@@ -3,18 +3,19 @@ import math
 def calculator():
     """A complex calculator for division, square root, and modulo operations."""
 
-    operations = {
-        '/': lambda a, b: a / b if b != 0 else "Error: Division by zero.",
-        '%': lambda a, b: a % b,
-        'sqrt': lambda a, _: math.sqrt(a) if a >= 0 else "Error: Negative square root.",
-    }
-
     try:
-        # Get user input for the first number and operation
+        # User input for the first number and operation
         num1 = float(input("Enter the first number: "))
-        operation = input("Enter an operation ('/', 'sqrt', '%'): ").strip()
+        operation = input("Enter an operation ('/' for division, 'sqrt' for square root, '%' for modulo): ").strip()
 
-        # Get the second number if required
+        # Define operations using lambda functions
+        operations = {
+            '/': lambda a, b: a / b,  #raise ZeroDivisionError
+            '%': lambda a, b: a % b,
+            'sqrt': lambda a: math.sqrt(a) if a >= 0 else raise_negative_sqrt_error()
+        }
+
+        # If the operation requires a second number, get num2
         num2 = None
         if operation in {'/', '%'}:
             num2 = float(input("Enter the second number: "))
@@ -23,18 +24,27 @@ def calculator():
         if operation not in operations:
             raise ValueError(f"Invalid operation: {operation}")
 
-        # Perform the operation
-        result = operations[operation](num1, num2)
-        print(f"Result: {result}")
+        # Execute the operation
+        if operation == 'sqrt':
+            result = operations[operation](num1)
+        else:
+            result = operations[operation](num1, num2)
 
+    # Handle invalid input (non-numeric or invalid operations)
     except ValueError as ve:
         print(f"Invalid input: {ve}")
-    except TypeError:
-        print("Error: Missing or incorrect operands.")
+    # Handle division by zero
+    except ZeroDivisionError:
+        print("Error: Cannot divide by zero.")
+    # Handle any other exceptions
     else:
-        print("Operation completed successfully.")
+        print(f"Result: {result}")
     finally:
-        print("Calculator session ended.")
+        print("Operation completed.")
+
+def raise_negative_sqrt_error():
+    """Raise a ValueError for negative square root."""
+    raise ValueError("Cannot calculate square root of a negative number!")
 
 if __name__ == "__main__":
     calculator()
