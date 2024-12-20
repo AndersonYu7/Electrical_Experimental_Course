@@ -22,7 +22,10 @@ Electrical_Experimental_Course/
 │   ├── class6_break_ex1.py         # Break statement usage
 │   ├── class6_continue_ex1.py      # Continue statement usage
 │   ├── yolov8_test.py              # YOLOv8 model test
+│   ├── yolov8_train.py             # YOLOv8 model training script
 │   ├── file1.txt                   # Test file 1
 │   ├── file2.txt                   # Test file 2
 │   ├── file3.txt                   # Test file 3
-
+│
+├── camera/
+│   ├── hand_test.py                # Automatically predicts hand gestures and displays
